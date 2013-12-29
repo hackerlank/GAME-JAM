@@ -5,8 +5,9 @@
 *.ap_
 *.apk
 .metadata/
-Serp-android/bin/
-Serp-desktop/bin/
-Serp/bin/
-Serp-html/
-
+GameJam-android/gen/
+GameJam-android/bin/
+GameJam-desktop/bin/
+GameJam/bin/
+GameJam-html/bin
+GameJam-android/gen/
