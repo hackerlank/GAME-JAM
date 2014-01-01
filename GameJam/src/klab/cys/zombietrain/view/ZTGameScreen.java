@@ -1,14 +1,11 @@
 package klab.cys.zombietrain.view;
 
-import java.util.List;
-
 import klab.cys.zombietrain.controller.SwipeGestureDetector;
 import klab.cys.zombietrain.controller.SwipeGestureDetector.SwipeListener;
-import klab.cys.zombietrain.model.Poo;
-import klab.cys.zombietrain.model.ZTSettings;
 import klab.cys.zombietrain.model.ZTBody;
-import klab.cys.zombietrain.model.ZTPart;
 import klab.cys.zombietrain.model.ZTHuman;
+import klab.cys.zombietrain.model.ZTPart;
+import klab.cys.zombietrain.model.ZTSettings;
 import klab.cys.zombietrain.model.ZTWorld;
 
 import com.badlogic.gdx.Game;
@@ -52,7 +49,6 @@ public class ZTGameScreen extends ZTScreen {
 	Texture stain1;
 	Texture stain2;
 	Texture stain3;
-	Texture poo;
 	
 	Sound click;
 	Sound eat;
@@ -98,7 +94,6 @@ public class ZTGameScreen extends ZTScreen {
 		stain1 = ZTAssets.stain1;
 		stain2 = ZTAssets.stain2;
 		stain3 = ZTAssets.stain3;
-		poo = ZTAssets.poo;
 		
 		click = ZTAssets.click;
 		eat = ZTAssets.eat;
@@ -134,7 +129,6 @@ public class ZTGameScreen extends ZTScreen {
 		stain1 = assets.get("stain1.png", Texture.class);
 		stain2 = assets.get("stain2.png", Texture.class);
 		stain3 = assets.get("stain3.png", Texture.class);
-		poo = assets.get("poo.png", Texture.class);
 		
 		click = assets.get("click.ogg", Sound.class);
 		eat = assets.get("eat.ogg", Sound.class);
@@ -301,17 +295,9 @@ public class ZTGameScreen extends ZTScreen {
 		ZTBody snake = world.getSnake();
 		ZTPart head = snake.parts.get(0);
 		ZTHuman stain = world.getStain();
-		List<Poo> poos = world.getPoos();
 		
 		int x,y;
-		
-		if (!poos.isEmpty()){
-			for (Poo p: poos){
-				x = p.x * 32;
-				y = p.y * 32;
-				spriteBatch.draw(poo, x*ppuX, y*ppuY, 32*ppuX, 32*ppuY);
-			}
-		}
+
 		Texture stainPixmap = null;
 		if (stain.type == ZTHuman.TYPE_1)
 			stainPixmap = stain1;
