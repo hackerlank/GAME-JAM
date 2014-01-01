@@ -1,4 +1,4 @@
-package klab.cys.gamejam.model;
+package klab.cys.zombietrain.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,15 +7,15 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
-public class World {
+public class ZTWorld {
 	static final int WORLD_WIDTH = 10;
 	static final int WORLD_HEIGHT = 15;
 	static final int SCORE_INCREMENT = 10;
 	static final float TICK_INITIAL = 0.75f;
 	static final float TICK_DECREMENT = 0.05f;
 	
-	private Snake snake;
-	private Stain stain;
+	private ZTBody snake;
+	private ZTHuman stain;
 	private boolean gameOver = false;
 	private int score = 0;
 	
@@ -29,9 +29,9 @@ public class World {
 	public List<Poo> poos = new ArrayList<Poo>();
 	private int randomPoo = 10; // poo is placed when random nº in this range is <= score 
 	
-	public World(){
+	public ZTWorld(){
 		tick = TICK_INITIAL;
-		snake = new Snake();
+		snake = new ZTBody();
 		placeStain();
 	}
 	/*
@@ -52,7 +52,7 @@ public class World {
 		
 		int len = snake.parts.size();
 		for (int i = 0; i < len; i++) {
-			SnakePart part = snake.parts.get(i);
+			ZTPart part = snake.parts.get(i);
 			fields[part.x][part.y] = true;
 		}
 		
@@ -77,7 +77,7 @@ public class World {
 			if (stainY >= WORLD_HEIGHT)
 				stainY = 2;
 		}
-		stain = new Stain(stainX, stainY, MathUtils.random(2));
+		stain = new ZTHuman(stainX, stainY, MathUtils.random(2));
 	}
 	/*
 	 * Updating the world
@@ -103,7 +103,7 @@ public class World {
 				gameOver = true;
 				return;
 			}
-			SnakePart head = snake.parts.get(0);
+			ZTPart head = snake.parts.get(0);
 			if (head.x == stain.x && head.y == stain.y){ // eats a stain
 				score += SCORE_INCREMENT;
 				snake.grow();
@@ -134,28 +134,28 @@ public class World {
 	/**
 	 * @return the snake
 	 */
-	public Snake getSnake() {
+	public ZTBody getSnake() {
 		return snake;
 	}
 
 	/**
 	 * @param snake the snake to set
 	 */
-	public void setSnake(Snake snake) {
+	public void setSnake(ZTBody snake) {
 		this.snake = snake;
 	}
 
 	/**
 	 * @return the stain
 	 */
-	public Stain getStain() {
+	public ZTHuman getStain() {
 		return stain;
 	}
 
 	/**
 	 * @param stain the stain to set
 	 */
-	public void setStain(Stain stain) {
+	public void setStain(ZTHuman stain) {
 		this.stain = stain;
 	}
 
@@ -198,7 +198,7 @@ public class World {
 	 * @param tick the tick to set
 	 */
 	public static void setTick(float tick) {
-		World.tick = tick;
+		ZTWorld.tick = tick;
 	}
 	/**
 	 * @return the poos

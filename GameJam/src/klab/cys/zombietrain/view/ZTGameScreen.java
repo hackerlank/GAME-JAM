@@ -1,15 +1,15 @@
-package klab.cys.gamejam.view;
+package klab.cys.zombietrain.view;
 
 import java.util.List;
 
-import klab.cys.gamejam.controller.SwipeGestureDetector;
-import klab.cys.gamejam.controller.SwipeGestureDetector.SwipeListener;
-import klab.cys.gamejam.model.Poo;
-import klab.cys.gamejam.model.Settings;
-import klab.cys.gamejam.model.Snake;
-import klab.cys.gamejam.model.SnakePart;
-import klab.cys.gamejam.model.Stain;
-import klab.cys.gamejam.model.World;
+import klab.cys.zombietrain.controller.SwipeGestureDetector;
+import klab.cys.zombietrain.controller.SwipeGestureDetector.SwipeListener;
+import klab.cys.zombietrain.model.Poo;
+import klab.cys.zombietrain.model.ZTSettings;
+import klab.cys.zombietrain.model.ZTBody;
+import klab.cys.zombietrain.model.ZTPart;
+import klab.cys.zombietrain.model.ZTHuman;
+import klab.cys.zombietrain.model.ZTWorld;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 
 
-public class GameScreen extends SerpScreen {
+public class ZTGameScreen extends ZTScreen {
 	float vwidth = 320f; // v from virtual
 	float vheight = 480f;
 	private float ppuX;	// pixels per unit on the X axis
@@ -66,59 +66,59 @@ public class GameScreen extends SerpScreen {
 	}
 	
 	GameState state = GameState.Ready;
-	World world;
+	ZTWorld world;
 	int oldScore = 0;
 	String score = "0";
 
-	public GameScreen(Game game){
+	public ZTGameScreen(Game game){
 		super(game);
 		Gdx.app.error("GameScreen", "Constructor: super(game) job done!");
 
-		world = new World();
+		world = new ZTWorld();
 		
 		spriteBatch = new SpriteBatch();
 		
 		shaperenderer = new ShapeRenderer();
 		shaperenderer.setColor(Color.BLACK);
 		
-		settings = Settings.serpSettings;
-		highscores = Settings.serpHighscores;
+		settings = ZTSettings.serpSettings;
+		highscores = ZTSettings.serpHighscores;
 		
-		background = Assets.background;
-		ready = Assets.ready;
-		pause = Assets.pause;
-		gameover = Assets.gameOver;
-		numbers = Assets.numbers;
-		buttons = Assets.buttons;
-		headup = Assets.headUp;
-		headleft = Assets.headLeft;
-		headdown = Assets.headDown;
-		headright = Assets.headRight;
-		tail = Assets.tail;
-		stain1 = Assets.stain1;
-		stain2 = Assets.stain2;
-		stain3 = Assets.stain3;
-		poo = Assets.poo;
+		background = ZTAssets.background;
+		ready = ZTAssets.ready;
+		pause = ZTAssets.pause;
+		gameover = ZTAssets.gameOver;
+		numbers = ZTAssets.numbers;
+		buttons = ZTAssets.buttons;
+		headup = ZTAssets.headUp;
+		headleft = ZTAssets.headLeft;
+		headdown = ZTAssets.headDown;
+		headright = ZTAssets.headRight;
+		tail = ZTAssets.tail;
+		stain1 = ZTAssets.stain1;
+		stain2 = ZTAssets.stain2;
+		stain3 = ZTAssets.stain3;
+		poo = ZTAssets.poo;
 		
-		click = Assets.click;
-		eat = Assets.eat;
-		bitten = Assets.bitten;
+		click = ZTAssets.click;
+		eat = ZTAssets.eat;
+		bitten = ZTAssets.bitten;
 
 		setUpSwipeListener();
 	}
-	public GameScreen(Game game, AssetManager assets) {
+	public ZTGameScreen(Game game, AssetManager assets) {
 		super(game,assets);
 		Gdx.app.error("GameScreen", "Constructor: super(game,assets) job done!");
 
-		world = new World();
+		world = new ZTWorld();
 
 		spriteBatch = new SpriteBatch();
 		
 		shaperenderer = new ShapeRenderer();
 		shaperenderer.setColor(Color.BLACK);
 		
-		settings = Settings.serpSettings;
-		highscores = Settings.serpHighscores;
+		settings = ZTSettings.serpSettings;
+		highscores = ZTSettings.serpHighscores;
 
 		background = assets.get("background.png", Texture.class);
 		ready = assets.get("ready.png", Texture.class);
@@ -148,7 +148,7 @@ public class GameScreen extends SerpScreen {
 	 */
 	private void setUpSwipeListener(){
 		Gdx.input.setInputProcessor(new SwipeGestureDetector(new SwipeListener() {
-			Snake snake = world.getSnake();
+			ZTBody snake = world.getSnake();
 			
 			@Override
 			public void onUp() {
@@ -296,11 +296,11 @@ public class GameScreen extends SerpScreen {
         }
 	}
 
-	private void drawWorld(World world){
+	private void drawWorld(ZTWorld world){
 		
-		Snake snake = world.getSnake();
-		SnakePart head = snake.parts.get(0);
-		Stain stain = world.getStain();
+		ZTBody snake = world.getSnake();
+		ZTPart head = snake.parts.get(0);
+		ZTHuman stain = world.getStain();
 		List<Poo> poos = world.getPoos();
 		
 		int x,y;
@@ -313,11 +313,11 @@ public class GameScreen extends SerpScreen {
 			}
 		}
 		Texture stainPixmap = null;
-		if (stain.type == Stain.TYPE_1)
+		if (stain.type == ZTHuman.TYPE_1)
 			stainPixmap = stain1;
-		if (stain.type == Stain.TYPE_2)
+		if (stain.type == ZTHuman.TYPE_2)
 			stainPixmap = stain2;
-		if (stain.type == Stain.TYPE_3)
+		if (stain.type == ZTHuman.TYPE_3)
 			stainPixmap = stain3;
 		x = stain.x * 32;
 		y = stain.y * 32;
@@ -325,20 +325,20 @@ public class GameScreen extends SerpScreen {
 		
 		int len = snake.parts.size();
 		for (int i = 1; i < len; i++){
-			SnakePart part = snake.parts.get(i);
+			ZTPart part = snake.parts.get(i);
 			x = part.x * 32;
 			y = part.y * 32;
 			spriteBatch.draw(tail, x*ppuX, y*ppuY, 32*ppuX, 32*ppuY);
 		}
 		
 		Texture headPixmap = null;
-		if (snake.direction == Snake.UP)
+		if (snake.direction == ZTBody.UP)
 			headPixmap = headup;
-		if (snake.direction == Snake.LEFT)
+		if (snake.direction == ZTBody.LEFT)
 			headPixmap = headleft;
-		if (snake.direction == Snake.DOWN)
+		if (snake.direction == ZTBody.DOWN)
 			headPixmap = headdown;
-		if (snake.direction == Snake.RIGHT)
+		if (snake.direction == ZTBody.RIGHT)
 			headPixmap = headright;
 		x = head.x * 32 + 16;
 		y = head.y * 32 + 16;
@@ -362,7 +362,7 @@ public class GameScreen extends SerpScreen {
 	 * state.Running
 	 */
 	private void inputRunning(float deltaTime) {
-		Snake snake = world.getSnake();
+		ZTBody snake = world.getSnake();
 		if ((Gdx.input.justTouched())){
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -384,7 +384,7 @@ public class GameScreen extends SerpScreen {
 				bitten.play(1);
 			state = GameState.GameOver;
 			if (highscores.getInteger("4")< world.getScore())
-				Settings.addScore(world.getScore());
+				ZTSettings.addScore(world.getScore());
 		}
 		if (oldScore != world.getScore()) {
 			oldScore = world.getScore();
@@ -420,9 +420,9 @@ public class GameScreen extends SerpScreen {
 				if (settings.getBoolean("soundOn"))
 					click.play(1);
 				if (this.assets == null)
-					game.setScreen(new MainMenuScreen(game));
+					game.setScreen(new ZTGameScreen(game));
 				if (this.assets != null)
-					game.setScreen(new MainMenuScreen(game,assets));
+					game.setScreen(new ZTGameScreen(game,assets));
 				return;
 			}
 		}
@@ -442,9 +442,9 @@ public class GameScreen extends SerpScreen {
 				if (settings.getBoolean("soundOn"))
 					click.play(1);
 				if (this.assets == null)
-					game.setScreen(new MainMenuScreen(game));
+					game.setScreen(new ZTGameScreen(game));
 				if (this.assets != null)
-					game.setScreen(new MainMenuScreen(game,assets));
+					game.setScreen(new ZTGameScreen(game,assets));
 				return;
 			}
 		}

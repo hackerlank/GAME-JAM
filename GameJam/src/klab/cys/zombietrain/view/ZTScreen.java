@@ -1,4 +1,4 @@
-package klab.cys.gamejam.view;
+package klab.cys.zombietrain.view;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -6,19 +6,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class SerpScreen implements Screen{
+public abstract class ZTScreen implements Screen{
 	
 	Game game;
 	AssetManager assets;
 	
 	
-	public SerpScreen (Game game) {
+	public ZTScreen (Game game) {
 		Gdx.app.log("SerpScreen", "starting constructor");
 		this.game = game;
 	    Gdx.app.log("SerpScreen", "constructor, job done!");
 	}
 
-	public SerpScreen (Game game, AssetManager assets){
+	public ZTScreen (Game game, AssetManager assets){
 		Gdx.app.log("SerpScreen", "starting constructor");
 		this.game = game;
 		this.assets = assets;

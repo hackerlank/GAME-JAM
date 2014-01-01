@@ -1,6 +1,6 @@
-package klab.cys.gamejam;
+package klab.cys.zombietrain;
 
-import klab.cys.gamejam.SerpGame;
+import klab.cys.zombietrain.ZTGame;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -13,6 +13,6 @@ public class Main {
 		cfg.width = 320;
 		cfg.height = 480;
 		
-		new LwjglApplication(new SerpGame(), cfg);
+		new LwjglApplication(new ZTGame(), cfg);
 	}
 }

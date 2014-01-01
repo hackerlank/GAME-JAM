@@ -1,6 +1,6 @@
-package klab.cys.gamejam.view;
+package klab.cys.zombietrain.view;
 
-import klab.cys.gamejam.model.Settings;
+import klab.cys.zombietrain.model.ZTSettings;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,12 +9,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
-public class LoadingScreen extends SerpScreen {
+public class ZTLoadingScreen extends ZTScreen {
 
-	Preferences settings = Settings.serpSettings;
-	Preferences highscores = Settings.serpHighscores;
+	Preferences settings = ZTSettings.serpSettings;
+	Preferences highscores = ZTSettings.serpHighscores;
 	
-	public LoadingScreen(Game game) {
+	public ZTLoadingScreen(Game game) {
 		super(game);
 		Gdx.app.log("LoadingScreen", "Constructor: job done!");
 
@@ -24,7 +24,7 @@ public class LoadingScreen extends SerpScreen {
 		loadHighscores();
 
 	}
-	public LoadingScreen(Game game, AssetManager assets){
+	public ZTLoadingScreen(Game game, AssetManager assets){
 		super(game, assets);
 		Gdx.app.log("LoadingScreen", "Constructor: job done!");
 		Gdx.app.log("LoadingScreen", "LoadingScreen(game, assets), this.assets: "+ this.assets);
@@ -40,30 +40,30 @@ public class LoadingScreen extends SerpScreen {
 	 * two way assets loading
 	 */
 	public void loadGameAssets() {
-		Assets.background = new Texture(Gdx.files.internal("background.png"));
-		Assets.logo = new Texture(Gdx.files.internal("logo.png"));
-		Assets.mainMenu = new Texture(Gdx.files.internal("mainmenu.png"));
-		Assets.buttons = new Texture(Gdx.files.internal("buttons.png"));
-		Assets.help1 = new Texture(Gdx.files.internal("help1.png"));
-		Assets.help2 = new Texture(Gdx.files.internal("help2.png"));
-		Assets.help3 = new Texture(Gdx.files.internal("help3.png"));
-		Assets.numbers = new Texture(Gdx.files.internal("numbers.png"));
-		Assets.ready = new Texture(Gdx.files.internal("ready.png"));
-		Assets.pause = new Texture(Gdx.files.internal("pausemenu.png"));
-		Assets.gameOver = new Texture(Gdx.files.internal("gameover.png"));
-		Assets.headUp = new Texture(Gdx.files.internal("headup.png"));
-		Assets.headLeft = new Texture(Gdx.files.internal("headleft.png"));
-		Assets.headDown = new Texture(Gdx.files.internal("headdown.png"));
-		Assets.headRight = new Texture(Gdx.files.internal("headright.png"));
-		Assets.tail = new Texture(Gdx.files.internal("tail.png"));
-		Assets.stain1 = new Texture(Gdx.files.internal("stain1.png"));
-		Assets.stain2 = new Texture(Gdx.files.internal("stain2.png"));
-		Assets.stain3 = new Texture(Gdx.files.internal("stain3.png"));
-		Assets.poo = new Texture(Gdx.files.internal("poo.png"));
+		ZTAssets.background = new Texture(Gdx.files.internal("background.png"));
+		ZTAssets.logo = new Texture(Gdx.files.internal("logo.png"));
+		ZTAssets.mainMenu = new Texture(Gdx.files.internal("mainmenu.png"));
+		ZTAssets.buttons = new Texture(Gdx.files.internal("buttons.png"));
+		ZTAssets.help1 = new Texture(Gdx.files.internal("help1.png"));
+		ZTAssets.help2 = new Texture(Gdx.files.internal("help2.png"));
+		ZTAssets.help3 = new Texture(Gdx.files.internal("help3.png"));
+		ZTAssets.numbers = new Texture(Gdx.files.internal("numbers.png"));
+		ZTAssets.ready = new Texture(Gdx.files.internal("ready.png"));
+		ZTAssets.pause = new Texture(Gdx.files.internal("pausemenu.png"));
+		ZTAssets.gameOver = new Texture(Gdx.files.internal("gameover.png"));
+		ZTAssets.headUp = new Texture(Gdx.files.internal("headup.png"));
+		ZTAssets.headLeft = new Texture(Gdx.files.internal("headleft.png"));
+		ZTAssets.headDown = new Texture(Gdx.files.internal("headdown.png"));
+		ZTAssets.headRight = new Texture(Gdx.files.internal("headright.png"));
+		ZTAssets.tail = new Texture(Gdx.files.internal("tail.png"));
+		ZTAssets.stain1 = new Texture(Gdx.files.internal("stain1.png"));
+		ZTAssets.stain2 = new Texture(Gdx.files.internal("stain2.png"));
+		ZTAssets.stain3 = new Texture(Gdx.files.internal("stain3.png"));
+		ZTAssets.poo = new Texture(Gdx.files.internal("poo.png"));
 	    
-		Assets.click = Gdx.audio.newSound(Gdx.files.internal("click.ogg"));
-		Assets.eat = Gdx.audio.newSound(Gdx.files.internal("eat.ogg"));
-		Assets.bitten = Gdx.audio.newSound(Gdx.files.internal("bitten.ogg"));
+		ZTAssets.click = Gdx.audio.newSound(Gdx.files.internal("click.ogg"));
+		ZTAssets.eat = Gdx.audio.newSound(Gdx.files.internal("eat.ogg"));
+		ZTAssets.bitten = Gdx.audio.newSound(Gdx.files.internal("bitten.ogg"));
     }
 	private void loadAssetManager() {
 		// Using assets as an AssetManager
@@ -133,9 +133,9 @@ public class LoadingScreen extends SerpScreen {
 //			game.setScreen(new MainMenuScreen(game, assets));
 		
 		if (this.assets == null)
-			game.setScreen(new GameScreen(game));
+			game.setScreen(new ZTGameScreen(game));
 		if (this.assets != null)
-			game.setScreen(new GameScreen(game,assets));
+			game.setScreen(new ZTGameScreen(game,assets));
 		
 		Gdx.app.log("LoadingScreen", "ended render()");
 	}

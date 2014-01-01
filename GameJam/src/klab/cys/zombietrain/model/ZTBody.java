@@ -1,22 +1,22 @@
-package klab.cys.gamejam.model;
+package klab.cys.zombietrain.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Snake {
+public class ZTBody {
 	public static final int UP = 0;
 	public static final int LEFT = 1;
 	public static final int DOWN = 2;
 	public static final int RIGHT = 3;
 	
-	public List<SnakePart> parts = new ArrayList<SnakePart>();
+	public List<ZTPart> parts = new ArrayList<ZTPart>();
 	public int direction;
 	
-	public Snake() {
+	public ZTBody() {
 		direction = DOWN;
-		parts.add(new SnakePart(5,6));
-		parts.add(new SnakePart(5,7));
-		parts.add(new SnakePart(5,8));
+		parts.add(new ZTPart(5,6));
+		parts.add(new ZTPart(5,7));
+		parts.add(new ZTPart(5,8));
 	}
 	/*
 	 * Move
@@ -45,12 +45,12 @@ public class Snake {
 		direction = RIGHT;
 	}
 	public void advance(){
-		SnakePart head = parts.get(0);
+		ZTPart head = parts.get(0);
 		
 		int len = parts.size() - 1;
 		for (int i = len; i > 0; i --){
-			SnakePart before = parts.get(i-1);
-			SnakePart part = parts.get(i);
+			ZTPart before = parts.get(i-1);
+			ZTPart part = parts.get(i);
 			part.x = before.x;
 			part.y = before.y;
 		}
@@ -77,14 +77,14 @@ public class Snake {
 	 * Others
 	 */
 	public void grow() {
-		SnakePart end = parts.get(parts.size()-1);
-		parts.add(new SnakePart(end.x,end.y));
+		ZTPart end = parts.get(parts.size()-1);
+		parts.add(new ZTPart(end.x,end.y));
 	}
 	public boolean checkBitten() {
 		int len = parts.size();
-		SnakePart head = parts.get(0);
+		ZTPart head = parts.get(0);
 		for (int i = 1; i<len; i++){
-			SnakePart part = parts.get(i);
+			ZTPart part = parts.get(i);
 			if (part.x == head.x && part.y == head.y)
 				return true;
 		}

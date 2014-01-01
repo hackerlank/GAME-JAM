@@ -1,10 +1,10 @@
-package klab.cys.gamejam.view;
+package klab.cys.zombietrain.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
-public class Assets {
+public class ZTAssets {
 	public static Texture background = new Texture(Gdx.files.internal("background.png"));
 	public static Texture logo = new Texture(Gdx.files.internal("logo.png"));
     public static Texture mainMenu = new Texture(Gdx.files.internal("mainmenu.png"));

@@ -1,7 +1,6 @@
-package klab.cys.gamejam.controller;
+package klab.cys.zombietrain.controller;
 
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 
 public class SwipeGestureDetector extends GestureDetector {
 	public interface SwipeListener {

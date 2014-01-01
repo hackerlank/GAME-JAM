@@ -1,9 +1,9 @@
-package klab.cys.gamejam.model;
+package klab.cys.zombietrain.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-public class Settings {
+public class ZTSettings {
 	public static Preferences serpSettings = Gdx.app.getPreferences("serpSettings");
 	public static Preferences serpHighscores = Gdx.app.getPreferences("serpHighscores");
 

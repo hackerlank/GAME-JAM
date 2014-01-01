@@ -1,4 +1,4 @@
-package klab.cys.gamejam;
+package klab.cys.zombietrain;
 
 import android.os.Bundle;
 
@@ -16,6 +16,6 @@ public class MainActivity extends AndroidApplication {
         cfg.useAccelerometer = false;
         cfg.useCompass = false;
         
-        initialize(new SerpGame(), cfg);
+        initialize(new ZTGame(), cfg);
     }
 }
