@@ -63,15 +63,15 @@ public class ZTBody {
 			head.y -= 1;
 		if (direction == RIGHT)
 			head.x += 1;
-		
-		if (head.x < 0)
-			head.x = 9;
-		if (head.x > 9)
-			head.x = 0;
-		if (head.y < 2)
-			head.y = 14;
-		if (head.y > 14)
-			head.y = 2;
+		// Move the head to opposite side when it reach the side
+//		if (head.x < 0)
+//			head.x = 9;
+//		if (head.x > 9)
+//			head.x = 0;
+//		if (head.y < 2)
+//			head.y = 14;
+//		if (head.y > 14)
+//			head.y = 2;
 	}
 	/*
 	 * Others
