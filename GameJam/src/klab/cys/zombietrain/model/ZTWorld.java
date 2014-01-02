@@ -1,5 +1,7 @@
 package klab.cys.zombietrain.model;
 
+import klab.cys.zombietrain.view.ZTGameScreen;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -19,8 +21,6 @@ public class ZTWorld {
 	private float tickTime = 0;
 	private static float tick;
 	
-	private int buttonUILoc;
-	
 	public ZTWorld(){
 		tick = TICK_INITIAL;
 		snake = new ZTBody();
@@ -29,7 +29,7 @@ public class ZTWorld {
 
 	public void placeStain(){
 		for (int x=0; x < WORLD_WIDTH; x++){
-			for (int y = buttonUILoc; y < WORLD_HEIGHT; y++){
+			for (int y = ZTGameScreen.WORLD_LOWER_BOUND; y < WORLD_HEIGHT; y++){
 				fields[x][y] = false; // buttonUILoc <= y <= WORLD_HEIGHT, 0 to buttonUILoc are placed our direction buttons
 			}
 		}
@@ -42,7 +42,7 @@ public class ZTWorld {
 		
 		int stainX = MathUtils.random(WORLD_WIDTH-1);
 		Gdx.app.log("World", "placeStain(); stainX: "+stainX);
-		int stainY = MathUtils.random(buttonUILoc, WORLD_HEIGHT-1);
+		int stainY = MathUtils.random(ZTGameScreen.WORLD_LOWER_BOUND, WORLD_HEIGHT-1);
 		Gdx.app.log("World", "placeStain(); stainY: "+stainY);
 		
 		while (true) {
@@ -53,7 +53,7 @@ public class ZTWorld {
 				stainX = 0;
 			stainY += 1;
 			if (stainY >= WORLD_HEIGHT)
-				stainY = buttonUILoc;
+				stainY = ZTGameScreen.WORLD_LOWER_BOUND;
 		}
 		stain = new ZTHuman(stainX, stainY, MathUtils.random(2));
 	}
@@ -71,7 +71,8 @@ public class ZTWorld {
 			snake.advance();
 
 			ZTPart head = snake.parts.get(0);
-			boolean isOutOfStage = head.x < 0 || head.x >= WORLD_WIDTH || head.y < buttonUILoc || head.y >= WORLD_HEIGHT; 
+			boolean isOutOfStage = head.x < 0 || head.x >= WORLD_WIDTH ||
+								head.y < ZTGameScreen.WORLD_LOWER_BOUND || head.y >= WORLD_HEIGHT; 
 			if (snake.checkBitten() || isOutOfStage) {
 				gameOver = true;
 				return;
@@ -163,9 +164,5 @@ public class ZTWorld {
 	 */
 	public static void setTick(float tick) {
 		ZTWorld.tick = tick;
-	}
-	
-	public void setButtonUILoc(int unitLoc){
-		buttonUILoc = unitLoc;
 	}
 }

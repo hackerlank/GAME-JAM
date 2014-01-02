@@ -23,6 +23,8 @@ import com.badlogic.gdx.math.Vector3;
 
 
 public class ZTGameScreen extends ZTScreen {
+	public static final int WORLD_LOWER_BOUND = 4;
+	
 	float vwidth = 320f; // v from virtual
 	float vheight = 480f;
 	private float ppuX;	// pixels per unit on the X axis
@@ -71,7 +73,6 @@ public class ZTGameScreen extends ZTScreen {
 		Gdx.app.error("GameScreen", "Constructor: super(game) job done!");
 
 		world = new ZTWorld();
-		world.setButtonUILoc(4);
 		
 		spriteBatch = new SpriteBatch();
 		
@@ -107,7 +108,6 @@ public class ZTGameScreen extends ZTScreen {
 		Gdx.app.error("GameScreen", "Constructor: super(game,assets) job done!");
 
 		world = new ZTWorld();
-		world.setButtonUILoc(4);
         
 		spriteBatch = new SpriteBatch();
 		
