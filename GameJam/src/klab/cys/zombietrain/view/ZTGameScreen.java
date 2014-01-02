@@ -31,7 +31,7 @@ public class ZTGameScreen extends ZTScreen {
 
 	SpriteBatch spriteBatch;
 	ShapeRenderer shaperenderer;
-
+	
 	Preferences settings;
 	Preferences highscores;
 	
@@ -71,6 +71,7 @@ public class ZTGameScreen extends ZTScreen {
 		Gdx.app.error("GameScreen", "Constructor: super(game) job done!");
 
 		world = new ZTWorld();
+		world.setButtonUILoc(4);
 		
 		spriteBatch = new SpriteBatch();
 		
@@ -106,7 +107,8 @@ public class ZTGameScreen extends ZTScreen {
 		Gdx.app.error("GameScreen", "Constructor: super(game,assets) job done!");
 
 		world = new ZTWorld();
-
+		world.setButtonUILoc(4);
+        
 		spriteBatch = new SpriteBatch();
 		
 		shaperenderer = new ShapeRenderer();
@@ -297,7 +299,8 @@ public class ZTGameScreen extends ZTScreen {
 		ZTHuman stain = world.getStain();
 		
 		int x,y;
-
+		int ppwu = getPixelPerWorldUnit(1);
+		
 		Texture stainPixmap = null;
 		if (stain.type == ZTHuman.TYPE_1)
 			stainPixmap = stain1;
@@ -305,16 +308,20 @@ public class ZTGameScreen extends ZTScreen {
 			stainPixmap = stain2;
 		if (stain.type == ZTHuman.TYPE_3)
 			stainPixmap = stain3;
-		x = stain.x * 32;
-		y = stain.y * 32;
-		spriteBatch.draw(stainPixmap, x*ppuX, y*ppuY, 32*ppuX, 32*ppuY);
+		x = stain.x * ppwu;
+		y = stain.y * ppwu;
+		spriteBatch.draw(stainPixmap, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);
 		
 		int len = snake.parts.size();
 		for (int i = 1; i < len; i++){
 			ZTPart part = snake.parts.get(i);
-			x = part.x * 32;
-			y = part.y * 32;
-			spriteBatch.draw(tail, x*ppuX, y*ppuY, 32*ppuX, 32*ppuY);
+			x = part.x * ppwu;
+			y = part.y * ppwu;
+			spriteBatch.draw(tail, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);
+		}
+		
+		if(state == GameState.GameOver){
+			return;
 		}
 		
 		Texture headPixmap = null;
@@ -326,12 +333,13 @@ public class ZTGameScreen extends ZTScreen {
 			headPixmap = headdown;
 		if (snake.direction == ZTBody.RIGHT)
 			headPixmap = headright;
-		x = head.x * 32 + 16;
-		y = head.y * 32 + 16;
+		x = head.x * ppwu;// + ppwu/2;
+		y = head.y * ppwu;// + ppwu/2;
 		if (headPixmap == null)
 			Gdx.app.error("GameScreen", "drawWorld(), headPixmap == null");
-		spriteBatch.draw(headPixmap, x*ppuX - (headPixmap.getWidth() / 2)*ppuX, 
-				y*ppuY - (headPixmap.getHeight() /2)*ppuY, 42*ppuX, 42*ppuY);
+//		spriteBatch.draw(headPixmap, x*ppuX - (headPixmap.getWidth() / 2)*ppuX, 
+//				y*ppuY - (headPixmap.getHeight() /2)*ppuY, 42*ppuX, 42*ppuY);
+		spriteBatch.draw(headPixmap, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);
 	}
 	/*
 	 * state.ready
@@ -441,5 +449,8 @@ public class ZTGameScreen extends ZTScreen {
 		spriteBatch.draw(buttons, width/2 - 32*ppuX, height/3 -32*ppuY, 64*ppuX, 64*ppuY,
 				0, 128, 64, 64, false, false);
 	}
-	
+
+	public int getPixelPerWorldUnit(int unit){
+		return (int) (unit*(vwidth/ZTWorld.WORLD_WIDTH));
+	}
 }

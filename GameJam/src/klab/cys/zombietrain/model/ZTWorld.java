@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
 public class ZTWorld {
-	static final int WORLD_WIDTH = 10;
-	static final int WORLD_HEIGHT = 15;
-	static final int SCORE_INCREMENT = 10;
-	static final float TICK_INITIAL = 0.75f;
-	static final float TICK_DECREMENT = 0.05f;
+	public static final int WORLD_WIDTH = 20;
+	public static final int WORLD_HEIGHT = 30;
+	public static final int SCORE_INCREMENT = 10;
+	public static final float TICK_INITIAL = 0.75f;
+	public static final float TICK_DECREMENT = 0.05f;
 	
 	private ZTBody snake;
 	private ZTHuman stain;
@@ -19,6 +19,8 @@ public class ZTWorld {
 	private float tickTime = 0;
 	private static float tick;
 	
+	private int buttonUILoc;
+	
 	public ZTWorld(){
 		tick = TICK_INITIAL;
 		snake = new ZTBody();
@@ -27,8 +29,8 @@ public class ZTWorld {
 
 	public void placeStain(){
 		for (int x=0; x < WORLD_WIDTH; x++){
-			for (int y = 2; y < WORLD_HEIGHT; y++){
-				fields[x][y] = false; // 2 <= y <=15, 0 and 1 are placed our direction buttons
+			for (int y = buttonUILoc; y < WORLD_HEIGHT; y++){
+				fields[x][y] = false; // buttonUILoc <= y <= WORLD_HEIGHT, 0 to buttonUILoc are placed our direction buttons
 			}
 		}
 		
@@ -40,7 +42,7 @@ public class ZTWorld {
 		
 		int stainX = MathUtils.random(WORLD_WIDTH-1);
 		Gdx.app.log("World", "placeStain(); stainX: "+stainX);
-		int stainY = MathUtils.random(2, WORLD_HEIGHT-1);
+		int stainY = MathUtils.random(buttonUILoc, WORLD_HEIGHT-1);
 		Gdx.app.log("World", "placeStain(); stainY: "+stainY);
 		
 		while (true) {
@@ -51,7 +53,7 @@ public class ZTWorld {
 				stainX = 0;
 			stainY += 1;
 			if (stainY >= WORLD_HEIGHT)
-				stainY = 2;
+				stainY = buttonUILoc;
 		}
 		stain = new ZTHuman(stainX, stainY, MathUtils.random(2));
 	}
@@ -67,11 +69,14 @@ public class ZTWorld {
 		while (tickTime > tick){
 			tickTime -= tick;
 			snake.advance();
-			if (snake.checkBitten()) {
+
+			ZTPart head = snake.parts.get(0);
+			boolean isOutOfStage = head.x < 0 || head.x >= WORLD_WIDTH || head.y < buttonUILoc || head.y >= WORLD_HEIGHT; 
+			if (snake.checkBitten() || isOutOfStage) {
 				gameOver = true;
 				return;
 			}
-			ZTPart head = snake.parts.get(0);
+			
 			if (head.x == stain.x && head.y == stain.y){ // eats a stain
 				score += SCORE_INCREMENT;
 				snake.grow();
@@ -158,5 +163,9 @@ public class ZTWorld {
 	 */
 	public static void setTick(float tick) {
 		ZTWorld.tick = tick;
+	}
+	
+	public void setButtonUILoc(int unitLoc){
+		buttonUILoc = unitLoc;
 	}
 }
