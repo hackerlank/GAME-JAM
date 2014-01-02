@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
 public class ZTWorld {
-	static final int WORLD_WIDTH = 10;
-	static final int WORLD_HEIGHT = 15;
-	static final int SCORE_INCREMENT = 10;
-	static final float TICK_INITIAL = 0.75f;
-	static final float TICK_DECREMENT = 0.05f;
+	public static final int WORLD_WIDTH = 20;
+	public static final int WORLD_HEIGHT = 30;
+	public static final int SCORE_INCREMENT = 10;
+	public static final float TICK_INITIAL = 0.75f;
+	public static final float TICK_DECREMENT = 0.05f;
 	
 	private ZTBody snake;
 	private ZTHuman stain;
