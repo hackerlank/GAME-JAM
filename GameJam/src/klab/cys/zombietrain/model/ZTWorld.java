@@ -59,17 +59,17 @@ public class ZTWorld {
 		}
 
 		if(level < 3){
-			stain = new ZTHuman(stainX, stainY, ZTHuman.TYPE_1);
+			stain = new ZTHuman(stainX, stainY, ZTHuman.MOVEMENT_STAY);
 		} else if(level < 5){
 			stain = new ZTHuman(stainX, stainY, MathUtils.random(2), 3);
 		} else{
 			int percent = MathUtils.random(100);
 			if(percent > 50){
-				stain = new ZTHuman(stainX, stainY, MathUtils.random(2), MathUtils.random(4, 6));
+				stain = new ZTHuman(stainX, stainY, MathUtils.random(3), MathUtils.random(4, 6));
 			} else if(percent > 15){
 				stain = new ZTHuman(stainX, stainY, MathUtils.random(2), 3);
 			} else{
-				stain = new ZTHuman(stainX, stainY, ZTHuman.TYPE_1);
+				stain = new ZTHuman(stainX, stainY, ZTHuman.MOVEMENT_STAY);
 			}
 		}
 	}
@@ -94,13 +94,13 @@ public class ZTWorld {
 				return;
 			}
 			
-			if(stain.type != ZTHuman.TYPE_1){
+			if(stain.type != ZTHuman.MOVEMENT_STAY){
 				int prevX = stain.x;
 				int prevY = stain.y;
 				stain.move();
 	
 				if(isSnakePartHit(stain)){
-					stain.remainingMove = 0;
+					stain.getAI().setRemainingMove(0);
 					stain.x = prevX;
 					stain.y = prevY;
 				}
