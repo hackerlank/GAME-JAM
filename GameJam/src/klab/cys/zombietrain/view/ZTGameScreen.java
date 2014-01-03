@@ -2,6 +2,7 @@ package klab.cys.zombietrain.view;
 
 import klab.cys.zombietrain.controller.SwipeGestureDetector;
 import klab.cys.zombietrain.controller.SwipeGestureDetector.SwipeListener;
+import klab.cys.zombietrain.controller.ZTConstants;
 import klab.cys.zombietrain.model.ZTBody;
 import klab.cys.zombietrain.model.ZTHuman;
 import klab.cys.zombietrain.model.ZTPart;
@@ -158,7 +159,7 @@ public class ZTGameScreen extends ZTScreen {
 			public void onRight() {
 				Gdx.app.error("Swipe", "RIGHT");
 				if(state == GameState.Running){
-					snake.turnRight2();
+					snake.turnRight();
 				}
 			}
 
@@ -166,7 +167,7 @@ public class ZTGameScreen extends ZTScreen {
 			public void onLeft() {
 				Gdx.app.error("Swipe", "LEFT");
 				if(state == GameState.Running){
-					snake.turnLeft2();
+					snake.turnLeft();
 				}
 			}
 
@@ -325,13 +326,13 @@ public class ZTGameScreen extends ZTScreen {
 		}
 		
 		Texture headPixmap = null;
-		if (snake.direction == ZTBody.UP)
+		if (snake.direction == ZTConstants.MOVE_UP)
 			headPixmap = headup;
-		if (snake.direction == ZTBody.LEFT)
+		if (snake.direction == ZTConstants.MOVE_LEFT)
 			headPixmap = headleft;
-		if (snake.direction == ZTBody.DOWN)
+		if (snake.direction == ZTConstants.MOVE_DOWN)
 			headPixmap = headdown;
-		if (snake.direction == ZTBody.RIGHT)
+		if (snake.direction == ZTConstants.MOVE_RIGHT)
 			headPixmap = headright;
 		x = head.x * ppwu;// + ppwu/2;
 		y = head.y * ppwu;// + ppwu/2;
@@ -366,9 +367,9 @@ public class ZTGameScreen extends ZTScreen {
 				state = GameState.Paused;
 				return;
 			} else if (inBounds(touchPos, 0, height-64*ppuY, 64*ppuX, 64*ppuY)){
-				snake.turnLeft();
+				snake.turnDownOrLeft();
 			} else if (inBounds(touchPos, width-64*ppuX, height-64*ppuY, 64*ppuX, 64*ppuY)){
-				snake.turnRight();
+				snake.turnUpOrRight();
 			}
 		}
 			

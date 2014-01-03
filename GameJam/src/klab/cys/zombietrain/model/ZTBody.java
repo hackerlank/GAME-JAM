@@ -3,17 +3,14 @@ package klab.cys.zombietrain.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import klab.cys.zombietrain.controller.ZTConstants;
+
 public class ZTBody {
-	public static final int UP = 0;
-	public static final int LEFT = 1;
-	public static final int DOWN = 2;
-	public static final int RIGHT = 3;
-	
 	public List<ZTPart> parts = new ArrayList<ZTPart>();
 	public int direction;
 	
 	public ZTBody() {
-		direction = DOWN;
+		direction = ZTConstants.MOVE_DOWN;
 		parts.add(new ZTPart(5,6));
 		parts.add(new ZTPart(5,7));
 		parts.add(new ZTPart(5,8));
@@ -21,28 +18,29 @@ public class ZTBody {
 	/*
 	 * Move
 	 */
-	public void turnLeft() {
-		direction += 1;
-		if (direction > RIGHT)
-			direction = UP;
-	}
-	public void turnRight() {
-		direction -= 1;
-		if (direction < UP) 
-			direction = RIGHT;
-	}
-	
 	public void turnUp() {
-		direction = UP;
+		direction = ZTConstants.MOVE_UP;
 	}
 	public void turnDown() {
-		direction = DOWN;
+		direction = ZTConstants.MOVE_DOWN;
 	}
-	public void turnLeft2() {
-		direction = LEFT;
+	public void turnLeft() {
+		direction = ZTConstants.MOVE_LEFT;
 	}
-	public void turnRight2() {
-		direction = RIGHT;
+	public void turnRight() {
+		direction = ZTConstants.MOVE_RIGHT;
+	}
+	public void turnDownOrLeft() {
+		if (direction == ZTConstants.MOVE_LEFT || direction == ZTConstants.MOVE_RIGHT)
+			direction = ZTConstants.MOVE_DOWN;
+		else if (direction == ZTConstants.MOVE_UP || direction == ZTConstants.MOVE_DOWN)
+			direction = ZTConstants.MOVE_LEFT;
+	}
+	public void turnUpOrRight() {
+		if (direction == ZTConstants.MOVE_LEFT || direction == ZTConstants.MOVE_RIGHT)
+			direction = ZTConstants.MOVE_UP;
+		else if (direction == ZTConstants.MOVE_UP || direction == ZTConstants.MOVE_DOWN)
+			direction = ZTConstants.MOVE_RIGHT;
 	}
 	public void advance(){
 		ZTPart head = parts.get(0);
@@ -55,13 +53,13 @@ public class ZTBody {
 			part.y = before.y;
 		}
 		
-		if (direction == UP)
+		if (direction == ZTConstants.MOVE_UP)
 			head.y += 1;
-		if (direction == LEFT)
+		if (direction == ZTConstants.MOVE_LEFT)
 			head.x -= 1;
-		if (direction == DOWN)
+		if (direction == ZTConstants.MOVE_DOWN)
 			head.y -= 1;
-		if (direction == RIGHT)
+		if (direction == ZTConstants.MOVE_RIGHT)
 			head.x += 1;
 		// Move the head to opposite side when it reach the side
 //		if (head.x < 0)
