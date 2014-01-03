@@ -21,6 +21,8 @@ public class ZTWorld {
 	private float tickTime = 0;
 	private static float tick;
 	
+	private int level = 1;
+	
 	public ZTWorld(){
 		tick = TICK_INITIAL;
 		snake = new ZTBody();
@@ -55,7 +57,21 @@ public class ZTWorld {
 			if (stainY >= WORLD_HEIGHT)
 				stainY = ZTGameScreen.WORLD_LOWER_BOUND;
 		}
-		stain = new ZTHuman(stainX, stainY, MathUtils.random(2));
+
+		if(level < 3){
+			stain = new ZTHuman(stainX, stainY, ZTHuman.TYPE_1);
+		} else if(level < 5){
+			stain = new ZTHuman(stainX, stainY, MathUtils.random(2), 3);
+		} else{
+			int percent = MathUtils.random(100);
+			if(percent > 50){
+				stain = new ZTHuman(stainX, stainY, MathUtils.random(2), MathUtils.random(4, 6));
+			} else if(percent > 15){
+				stain = new ZTHuman(stainX, stainY, MathUtils.random(2), 3);
+			} else{
+				stain = new ZTHuman(stainX, stainY, ZTHuman.TYPE_1);
+			}
+		}
 	}
 	/*
 	 * Updating the world
@@ -103,6 +119,7 @@ public class ZTWorld {
 				// Increase the speed everytime the score reaches multiple of 100
 				if (score % 100 == 0 && tick - TICK_DECREMENT > 0) {
 					tick -= TICK_DECREMENT;
+					level++;
 				}
 			}
 		}
