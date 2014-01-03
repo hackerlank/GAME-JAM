@@ -10,6 +10,7 @@ public class ZTWorld {
 	public static final int WORLD_HEIGHT = 30;
 	public static final int SCORE_INCREMENT = 10;
 	public static final float TICK_INITIAL = 0.75f;
+	public static final float TICK_INITIAL = 0.50f;
 	public static final float TICK_DECREMENT = 0.05f;
 	
 	private ZTBody snake;
