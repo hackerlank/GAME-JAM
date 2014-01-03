@@ -21,6 +21,8 @@ public class ZTWorld {
 	private float tickTime = 0;
 	private static float tick;
 	
+	private int level = 1;
+	
 	public ZTWorld(){
 		tick = TICK_INITIAL;
 		snake = new ZTBody();
