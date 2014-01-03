@@ -1,22 +1,27 @@
 package klab.cys.zombietrain.model;
 
+import klab.cys.zombietrain.ai.ZTAIMove;
+import klab.cys.zombietrain.ai.ZTAIMoveLeftRight;
+import klab.cys.zombietrain.ai.ZTAIMoveRoaming;
+import klab.cys.zombietrain.ai.ZTAIMoveStay;
+import klab.cys.zombietrain.ai.ZTAIMoveUpDown;
 import klab.cys.zombietrain.controller.ZTConstants;
 import klab.cys.zombietrain.view.ZTGameScreen;
 
 public class ZTHuman {
-	public static final int TYPE_1 = 0;
-	public static final int TYPE_2 = 1;
-	public static final int TYPE_3 = 2;
+	public static final int MOVEMENT_STAY = 0;
+	public static final int MOVEMENT_UP_DOWN = 1;
+	public static final int MOVEMENT_LEFT_RIGHT = 2;
+	public static final int MOVEMENT_ROAM = 3;
 	public int x, y;
 	public int type;
-	public int direction;
 	
-	public int remainingMove, moveSpace;
-	private int startX, startY, endX, endY;
+	private ZTAIMove ai;
 	
 	public ZTHuman( int x, int y){
 		this(x, y, 0, 0);
 	}
+	
 	public ZTHuman( int x, int y, int type){
 		this(x, y, type, 0);
 	}
@@ -24,142 +29,26 @@ public class ZTHuman {
 		this.x = x;
 		this.y = y;
 		this.type = type;
-		this.moveSpace = moveSpace;
-
-		remainingMove = moveSpace;
-		findMovingLocation();
+		
+		if(type == MOVEMENT_STAY){
+			ai = new ZTAIMoveStay(this, moveSpace);
+		} else if(type == MOVEMENT_UP_DOWN){
+			ai = new ZTAIMoveUpDown(this, moveSpace);
+		} else if(type == MOVEMENT_LEFT_RIGHT){
+			ai = new ZTAIMoveLeftRight(this, moveSpace);
+		} else if(type == MOVEMENT_ROAM){
+			ai = new ZTAIMoveRoaming(this, moveSpace);
+		}
+		
+		ai.findMoveLocation();
 	}
 	
-	public void findMovingLocation(){
-		startX = x;
-		startY = y;
-		if(type == TYPE_1){
-			endX = startX;
-			endY = startY;
-		} else if(type == TYPE_2){ // move up and down
-			endX = startX;
-			
-			int i;
-			int upDistance, downDistance;
-			
-			// check direction going up
-			for(i = 0; i < moveSpace; i++){
-				endY = startY + i;
-				if(endY == ZTWorld.WORLD_HEIGHT - 1){
-					break;
-				}
-			}
-			upDistance = i;
-			
-			// check direction going down
-			for(i = 0; i < moveSpace; i++){
-				endY = startY - i;
-				if(endY == ZTGameScreen.WORLD_LOWER_BOUND){
-					break;
-				}
-			}
-			downDistance = i;
-			
-			if(upDistance > downDistance){
-				endY = startY + upDistance;
-				direction  = ZTConstants.MOVE_UP;
-			} else{
-				endY = startY - downDistance;
-				direction  = ZTConstants.MOVE_DOWN;
-			}
-		} else if(type == TYPE_3){ // move left or right
-			endY = startY;
-			
-			int i;
-			int leftDistance, rightDistance;
-
-			// check direction going right
-			for(i = 0; i < moveSpace; i++){
-				endX = startX + i;
-				if(endX >= ZTWorld.WORLD_WIDTH - 1){
-					break;
-				}
-			}
-			rightDistance = i;
-			
-			// check direction going down
-			for(i = 0; i < moveSpace; i++){
-				endX = startX - i;
-				if(endX <= 0){
-					break;
-				}
-			}
-			leftDistance = i;
-			
-			if(rightDistance > leftDistance){
-				endX = startX + rightDistance;
-				direction  = ZTConstants.MOVE_RIGHT;
-			} else{
-				endX = startX - leftDistance;
-				direction  = ZTConstants.MOVE_LEFT;
-			}
-		}
-	}
 	
 	public void move(){
-		if(type == TYPE_1){
-			return;
-		} else if(type == TYPE_2){
-			if(remainingMove == 0){
-				remainingMove = moveSpace;
-
-				if(direction == ZTConstants.MOVE_UP){
-					direction = ZTConstants.MOVE_DOWN;
-				} else{
-					direction = ZTConstants.MOVE_UP;
-				}
-					
-				int tmp;
-				// Swap start and end Ys
-				tmp = startY;
-				startY = endY;
-				endY = tmp;
-			}
-			
-			if(direction == ZTConstants.MOVE_UP){
-				if(y != endY){
-					y++;
-				}
-			} else if(direction == ZTConstants.MOVE_DOWN){
-				if(y != endY){
-					y--;
-				}
-			}
-			
-			remainingMove--;
-		} else if(type == TYPE_3){
-			if(remainingMove == 0){
-				remainingMove = moveSpace;
-
-				if(direction == ZTConstants.MOVE_LEFT){
-					direction = ZTConstants.MOVE_RIGHT;
-				} else{
-					direction = ZTConstants.MOVE_LEFT;
-				}
-					
-				int tmp;
-				// Swap start and end Xs
-				tmp = startX;
-				startX = endX;
-				endX = tmp;
-			}
-			
-			if(direction == ZTConstants.MOVE_RIGHT){
-				if(x != endX){
-					x++;
-				}
-			} else if(direction == ZTConstants.MOVE_LEFT){
-				if(x != endX){
-					x--;
-				}
-			}
-			
-			remainingMove--;
-		}
+		ai.move();
+	}
+	
+	public ZTAIMove getAI(){
+		return ai;
 	}
 }
