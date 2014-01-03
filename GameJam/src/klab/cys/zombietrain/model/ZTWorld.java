@@ -57,7 +57,21 @@ public class ZTWorld {
 			if (stainY >= WORLD_HEIGHT)
 				stainY = ZTGameScreen.WORLD_LOWER_BOUND;
 		}
-		stain = new ZTHuman(stainX, stainY, MathUtils.random(2));
+
+		if(level < 3){
+			stain = new ZTHuman(stainX, stainY, ZTHuman.TYPE_1);
+		} else if(level < 5){
+			stain = new ZTHuman(stainX, stainY, MathUtils.random(2), 3);
+		} else{
+			int percent = MathUtils.random(100);
+			if(percent > 50){
+				stain = new ZTHuman(stainX, stainY, MathUtils.random(2), MathUtils.random(4, 6));
+			} else if(percent > 15){
+				stain = new ZTHuman(stainX, stainY, MathUtils.random(2), 3);
+			} else{
+				stain = new ZTHuman(stainX, stainY, ZTHuman.TYPE_1);
+			}
+		}
 	}
 	/*
 	 * Updating the world
