@@ -78,6 +78,18 @@ public class ZTWorld {
 				return;
 			}
 			
+			if(stain.type != ZTHuman.TYPE_1){
+				int prevX = stain.x;
+				int prevY = stain.y;
+				stain.move();
+	
+				if(isSnakePartHit(stain)){
+					stain.remainingMove = 0;
+					stain.x = prevX;
+					stain.y = prevY;
+				}
+			}
+			
 			if (head.x == stain.x && head.y == stain.y){ // eats a stain
 				score += SCORE_INCREMENT;
 				snake.grow();
@@ -94,6 +106,17 @@ public class ZTWorld {
 				}
 			}
 		}
+	}
+	
+	public boolean isSnakePartHit(ZTHuman human){
+		int len = snake.parts.size();
+		for (int i = 0; i < len; i++) {
+			ZTPart part = snake.parts.get(i);
+			if(human.x == part.x && human.y == part.y){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
