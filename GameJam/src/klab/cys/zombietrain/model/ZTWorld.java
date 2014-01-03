@@ -93,6 +93,7 @@ public class ZTWorld {
 				// Increase the speed everytime the score reaches multiple of 100
 				if (score % 100 == 0 && tick - TICK_DECREMENT > 0) {
 					tick -= TICK_DECREMENT;
+					level++;
 				}
 			}
 		}
