@@ -78,6 +78,9 @@ public class ZTBody {
 		ZTPart end = parts.get(parts.size()-1);
 		parts.add(new ZTPart(end.x,end.y));
 	}
+	public void reduce() {
+		parts.remove(parts.size()-1);
+	}
 	public boolean checkBitten() {
 		int len = parts.size();
 		ZTPart head = parts.get(0);

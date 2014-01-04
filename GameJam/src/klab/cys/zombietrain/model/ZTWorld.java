@@ -44,10 +44,10 @@ public class ZTWorld {
 		createPriestTime = TIME_INITIAL_CREATE_PRIEST;
 		createPoliceTime = TIME_INITIAL_CREATE_POLICE;
 		snake = new ZTBody();
-		placeStain();
+		placeHuman(ZTConstants.HUMAN);
 	}
 
-	public void placeStain(){
+	public void placeHuman(int type){
 		for (int x=0; x < WORLD_WIDTH; x++){
 			for (int y = ZTGameScreen.WORLD_LOWER_BOUND; y < WORLD_HEIGHT; y++){
 				fields[x][y] = false; // buttonUILoc <= y <= WORLD_HEIGHT, 0 to buttonUILoc are placed our direction buttons
@@ -59,6 +59,13 @@ public class ZTWorld {
 			ZTPart part = snake.parts.get(i);
 			fields[part.x][part.y] = true;
 		}
+		
+		len = priest.size();
+		for (int i = 0; i < len; i++){
+			ZTPriest p = priest.get(i);
+			fields[p.x][p.y] = true; 
+		}
+
 		
 		int stainX = MathUtils.random(WORLD_WIDTH-1);
 		Gdx.app.log("World", "placeStain(); stainX: "+stainX);
@@ -75,7 +82,17 @@ public class ZTWorld {
 			if (stainY >= WORLD_HEIGHT)
 				stainY = ZTGameScreen.WORLD_LOWER_BOUND;
 		}
-
+		
+		if(type == ZTConstants.HUMAN){
+			createHuman(stainX, stainY);
+		} else if(type == ZTConstants.PRIEST){
+			createPriest(stainX, stainY);
+		} else if(type == ZTConstants.POLICE){
+			createPolice(stainX, stainY);
+		}
+	}
+	
+	private void createHuman(int stainX, int stainY){
 		if(level < 3){
 			stain = new ZTHuman(stainX, stainY, ZTHuman.MOVEMENT_STAY);
 		} else if(level < 5){
@@ -91,6 +108,17 @@ public class ZTWorld {
 			}
 		}
 	}
+	
+	private void createPriest(int stainX, int stainY){
+		Gdx.app.error("Priest", "created at x: "+stainX+" y: "+stainY);
+		priest.add(new ZTPriest(stainX, stainY, MathUtils.random(15, 30)));
+	}
+	
+	private void createPolice(int stainX, int stainY){
+		Gdx.app.error("Police", "created at x: "+stainX+" y: "+stainY);
+		police.add(new ZTPolice(stainX, stainY, MathUtils.random(10, 20)));
+	}
+	
 	/*
 	 * Updating the world
 	 */
@@ -100,6 +128,41 @@ public class ZTWorld {
 		}
 
 		tickTime += deltaTime;
+		
+		if (!priest.isEmpty()){
+			for (Iterator<ZTPriest> it = priest.iterator(); it.hasNext();){
+				ZTPriest p = it.next();
+				p.timer -= deltaTime;
+				if (p.timer <= 0)
+					it.remove();
+			}
+		}
+
+		if (!police.isEmpty()){
+			for (Iterator<ZTPolice> it = police.iterator(); it.hasNext();){
+				ZTPolice p = it.next();
+				p.timer -= deltaTime;
+				if (p.timer <= 0)
+					it.remove();
+			}
+		}
+		
+		priestTime += deltaTime;
+		if(priestTime > createPriestTime){
+			priestTime -= createPriestTime;
+			if(level >= 5 && MathUtils.random(1) == 1){
+				placeHuman(ZTConstants.PRIEST);
+			}
+		}
+		
+		policeTime += deltaTime;
+		if(policeTime > createPoliceTime){
+			policeTime -= createPoliceTime;
+			if(level >= 3 && MathUtils.random(1) == 1){
+				placeHuman(ZTConstants.POLICE);
+			}
+		}
+
 		while (tickTime > tick){
 			tickTime -= tick;
 			snake.advance();
@@ -113,14 +176,49 @@ public class ZTWorld {
 			}
 			
 			if(stain.type != ZTHuman.MOVEMENT_STAY){
-				int prevX = stain.x;
-				int prevY = stain.y;
-				stain.move();
-	
-				if(isSnakePartHit(stain)){
-					stain.getAI().setRemainingMove(0);
-					stain.x = prevX;
-					stain.y = prevY;
+				moveHuman(stain);
+			}
+			
+			if(!priest.isEmpty()){
+				int priestSize = priest.size();
+				for(int i = 0; i < priestSize; i++){
+					moveHuman(priest.get(i));
+				}
+			}
+			
+			if(!police.isEmpty()){
+				for (Iterator<ZTPolice> it = police.iterator(); it.hasNext();){
+					ZTPolice p = it.next();
+					int percent = MathUtils.random(100);
+					if(percent >= 75){
+						ZTAIMoveRoamingFiring ai = (ZTAIMoveRoamingFiring) p.getAI();
+						if(ai.isSnakeInFront(snake)){
+							p.fire(bullets);
+						}
+					} else{
+						moveHuman(p);
+					}
+				}
+			}
+			
+			if(!bullets.isEmpty()){
+				for (Iterator<ZTBullet> it = bullets.iterator(); it.hasNext();){
+					ZTBullet p = it.next();
+					
+					if(p.getAI().getRemainingMove() == 0){
+						it.remove();
+						continue;
+					}
+					
+					p.move();
+					if(isSnakePartHit(p)){
+						snake.reduce();
+						it.remove();
+						if (snake.parts.size() == 0) {
+							gameOver = true;
+							return;
+						}
+					}
 				}
 			}
 			
@@ -131,15 +229,55 @@ public class ZTWorld {
 					gameOver = true;
 					return;
 				} else {
-					placeStain();
+					placeHuman(ZTConstants.HUMAN);
+				}
+				checkLevelUpdate();
+			} else{
+				if (!priest.isEmpty()){
+					for (Iterator<ZTPriest> it = priest.iterator(); it.hasNext();){
+						ZTPriest p = it.next();
+						if (head.x == p.x && head.y == p.y){
+							gameOver = true;
+							return;
+						}
+					}
 				}
 				
-				// Increase the speed everytime the score reaches multiple of 100
-				if (score % 100 == 0 && tick - TICK_DECREMENT > 0) {
-					tick -= TICK_DECREMENT;
-					level++;
+				if (!police.isEmpty()){
+					for (Iterator<ZTPolice> it = police.iterator(); it.hasNext();){
+						ZTPolice p = it.next();
+						if (head.x == p.x && head.y == p.y){
+							snake.grow();
+							score += SCORE_INCREMENT;
+							checkLevelUpdate();
+							it.remove();
+						}
+					}
 				}
 			}
+		}
+	}
+	
+	private void checkLevelUpdate(){
+		// Increase the speed every time the score reaches multiple of 100
+		if (score % 100 == 0 && tick - TICK_DECREMENT > 0) {
+			tick -= TICK_DECREMENT;
+			level++;
+			if(level > 5){
+				createPoliceTime -= TICK_DECREMENT;
+			}
+		}
+	}
+	
+	private void moveHuman(ZTHuman h){
+		int prevX = h.x;
+		int prevY = h.y;
+		h.move();
+
+		if(isSnakePartHit(h)){
+			h.getAI().setRemainingMove(0);
+			h.x = prevX;
+			h.y = prevY;
 		}
 	}
 	
