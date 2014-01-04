@@ -24,6 +24,8 @@ public class ZTWorld {
 	private ZTHuman stain;
 	private List<ZTPriest> priest = new ArrayList<ZTPriest>();
 	private List<ZTPolice> police = new ArrayList<ZTPolice>();
+	private List<ZTBullet> bullets = new ArrayList<ZTBullet>();
+	
 	private boolean gameOver = false;
 	private int score = 0;
 	
@@ -228,5 +230,9 @@ public class ZTWorld {
 
 	public List<ZTPolice> getPoliceList() {
 		return police;
+	}
+	
+	public List<ZTBullet> getBulletList() {
+		return bullets;
 	}
 }
