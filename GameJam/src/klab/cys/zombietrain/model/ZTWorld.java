@@ -1,5 +1,11 @@
 package klab.cys.zombietrain.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import klab.cys.zombietrain.ai.ZTAIMoveRoamingFiring;
+import klab.cys.zombietrain.controller.ZTConstants;
 import klab.cys.zombietrain.view.ZTGameScreen;
 
 import com.badlogic.gdx.Gdx;
@@ -11,20 +17,25 @@ public class ZTWorld {
 	public static final int SCORE_INCREMENT = 10;
 	public static final float TICK_INITIAL = 0.50f;
 	public static final float TICK_DECREMENT = 0.05f;
+	public static final float TIME_INITIAL_CREATE_PRIEST = 15;
 	
 	private ZTBody snake;
 	private ZTHuman stain;
+	private List<ZTPriest> priest = new ArrayList<ZTPriest>();
 	private boolean gameOver = false;
 	private int score = 0;
 	
 	private boolean fields[][] = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
 	private float tickTime = 0;
 	private static float tick;
+	private float priestTime = 0;
+	private static float createPriestTime;
 	
 	private int level = 1;
 	
 	public ZTWorld(){
 		tick = TICK_INITIAL;
+		createPriestTime = TIME_INITIAL_CREATE_PRIEST;
 		snake = new ZTBody();
 		placeStain();
 	}
@@ -204,5 +215,9 @@ public class ZTWorld {
 	 */
 	public static void setTick(float tick) {
 		ZTWorld.tick = tick;
+	}
+
+	public List<ZTPriest> getPriestList() {
+		return priest;
 	}
 }
