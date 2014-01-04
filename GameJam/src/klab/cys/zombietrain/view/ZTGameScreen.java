@@ -49,9 +49,10 @@ public class ZTGameScreen extends ZTScreen {
 	Texture headdown;
 	Texture headright;
 	Texture tail;
-	Texture stain1;
-	Texture stain2;
-	Texture stain3;
+	Texture human;
+	Texture priest;
+	Texture police;
+	Texture bullet;
 	
 	Sound click;
 	Sound eat;
@@ -94,9 +95,10 @@ public class ZTGameScreen extends ZTScreen {
 		headdown = ZTAssets.headDown;
 		headright = ZTAssets.headRight;
 		tail = ZTAssets.tail;
-		stain1 = ZTAssets.stain1;
-		stain2 = ZTAssets.stain2;
-		stain3 = ZTAssets.stain3;
+		human = ZTAssets.human;
+		priest = ZTAssets.priest;
+		police = ZTAssets.police;
+		bullet = ZTAssets.stain1;
 		
 		click = ZTAssets.click;
 		eat = ZTAssets.eat;
@@ -129,9 +131,10 @@ public class ZTGameScreen extends ZTScreen {
 		headdown = assets.get("headdown.png", Texture.class);
 		headright = assets.get("headright.png", Texture.class);
 		tail = assets.get("tail.png", Texture.class);
-		stain1 = assets.get("stain1.png", Texture.class);
-		stain2 = assets.get("stain2.png", Texture.class);
-		stain3 = assets.get("stain3.png", Texture.class);
+		human = assets.get("human.png", Texture.class);
+		priest = assets.get("priest.png", Texture.class);
+		police = assets.get("police.png", Texture.class);
+		bullet = assets.get("stain1.png", Texture.class);
 		
 		click = assets.get("click.ogg", Sound.class);
 		eat = assets.get("eat.ogg", Sound.class);
@@ -302,13 +305,7 @@ public class ZTGameScreen extends ZTScreen {
 		int x,y;
 		int ppwu = getPixelPerWorldUnit(1);
 		
-		Texture stainPixmap = null;
-		if (stain.type == ZTHuman.TYPE_1)
-			stainPixmap = stain1;
-		if (stain.type == ZTHuman.TYPE_2)
-			stainPixmap = stain2;
-		if (stain.type == ZTHuman.TYPE_3)
-			stainPixmap = stain3;
+		Texture stainPixmap = human;
 		x = stain.x * ppwu;
 		y = stain.y * ppwu;
 		spriteBatch.draw(stainPixmap, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);

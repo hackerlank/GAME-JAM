@@ -60,6 +60,9 @@ public class ZTLoadingScreen extends ZTScreen {
 		ZTAssets.stain2 = new Texture(Gdx.files.internal("stain2.png"));
 		ZTAssets.stain3 = new Texture(Gdx.files.internal("stain3.png"));
 		ZTAssets.poo = new Texture(Gdx.files.internal("poo.png"));
+		ZTAssets.priest = new Texture(Gdx.files.internal("priest.png"));
+		ZTAssets.human = new Texture(Gdx.files.internal("human.png"));
+		ZTAssets.police = new Texture(Gdx.files.internal("police.png"));
 	    
 		ZTAssets.click = Gdx.audio.newSound(Gdx.files.internal("click.ogg"));
 		ZTAssets.eat = Gdx.audio.newSound(Gdx.files.internal("eat.ogg"));
@@ -88,6 +91,9 @@ public class ZTLoadingScreen extends ZTScreen {
 		assets.load("stain2.png", Texture.class);
 		assets.load("stain3.png", Texture.class);
 		assets.load("poo.png", Texture.class);
+		assets.load("priest.png", Texture.class);
+		assets.load("human.png", Texture.class);
+		assets.load("police.png", Texture.class);
 
 		assets.load("click.ogg", Sound.class);
 		assets.load("eat.ogg", Sound.class);
@@ -126,11 +132,6 @@ public class ZTLoadingScreen extends ZTScreen {
 		Gdx.app.log("LoadingScreen", "starting render()");
 		Gdx.app.log("LoadingScreen", "render(), this.assets: "+ this.assets);
 		Gdx.app.log("LoadingScreen", "render(), assets: "+ assets);
-
-//		if (assets == null)
-//			game.setScreen(new MainMenuScreen(game));
-//		if (assets != null)
-//			game.setScreen(new MainMenuScreen(game, assets));
 		
 		if (this.assets == null)
 			game.setScreen(new ZTGameScreen(game));
