@@ -18,10 +18,12 @@ public class ZTWorld {
 	public static final float TICK_INITIAL = 0.50f;
 	public static final float TICK_DECREMENT = 0.05f;
 	public static final float TIME_INITIAL_CREATE_PRIEST = 15;
+	public static final float TIME_INITIAL_CREATE_POLICE = 10;
 	
 	private ZTBody snake;
 	private ZTHuman stain;
 	private List<ZTPriest> priest = new ArrayList<ZTPriest>();
+	private List<ZTPolice> police = new ArrayList<ZTPolice>();
 	private boolean gameOver = false;
 	private int score = 0;
 	
@@ -30,12 +32,15 @@ public class ZTWorld {
 	private static float tick;
 	private float priestTime = 0;
 	private static float createPriestTime;
+	private float policeTime = 0;
+	private static float createPoliceTime;
 	
 	private int level = 1;
 	
 	public ZTWorld(){
 		tick = TICK_INITIAL;
 		createPriestTime = TIME_INITIAL_CREATE_PRIEST;
+		createPoliceTime = TIME_INITIAL_CREATE_POLICE;
 		snake = new ZTBody();
 		placeStain();
 	}
@@ -219,5 +224,9 @@ public class ZTWorld {
 
 	public List<ZTPriest> getPriestList() {
 		return priest;
+	}
+
+	public List<ZTPolice> getPoliceList() {
+		return police;
 	}
 }
