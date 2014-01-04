@@ -25,6 +25,9 @@ public class ZTAssets {
     public static Texture stain2 = new Texture(Gdx.files.internal("stain2.png"));
     public static Texture stain3 = new Texture(Gdx.files.internal("stain3.png"));
     public static Texture poo = new Texture(Gdx.files.internal("poo.png"));
+    public static Texture priest = new Texture(Gdx.files.internal("priest.png"));
+    public static Texture human = new Texture(Gdx.files.internal("human.png"));
+    public static Texture police = new Texture(Gdx.files.internal("police.png"));
     
     public static Sound click = Gdx.audio.newSound(Gdx.files.internal("click.ogg"));
     public static Sound eat = Gdx.audio.newSound(Gdx.files.internal("eat.ogg"));
