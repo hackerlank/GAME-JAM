@@ -32,4 +32,8 @@ public abstract class ZTAIMove {
 	public void setMoveSpace(int moveSpace) {
 		this.moveSpace = moveSpace;
 	}
+	
+	public int getDirection(){
+		return direction;
+	}
 }
