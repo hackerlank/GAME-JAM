@@ -1,11 +1,16 @@
 package klab.cys.zombietrain.view;
 
+import java.util.List;
+
 import klab.cys.zombietrain.controller.SwipeGestureDetector;
 import klab.cys.zombietrain.controller.SwipeGestureDetector.SwipeListener;
 import klab.cys.zombietrain.controller.ZTConstants;
 import klab.cys.zombietrain.model.ZTBody;
+import klab.cys.zombietrain.model.ZTBullet;
 import klab.cys.zombietrain.model.ZTHuman;
 import klab.cys.zombietrain.model.ZTPart;
+import klab.cys.zombietrain.model.ZTPolice;
+import klab.cys.zombietrain.model.ZTPriest;
 import klab.cys.zombietrain.model.ZTSettings;
 import klab.cys.zombietrain.model.ZTWorld;
 
@@ -192,7 +197,7 @@ public class ZTGameScreen extends ZTScreen {
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 	    Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+		
 		spriteBatch.begin();
 		
 		spriteBatch.draw(background, 0, 0, width, height);
@@ -218,10 +223,12 @@ public class ZTGameScreen extends ZTScreen {
 		drawText(score, ((int)vwidth / 2 - score.length()*10), 10);
 		
 		spriteBatch.end();
-		shaperenderer.begin(ShapeType.Line);
-		shaperenderer.line(0, 64*ppuY, width, 64*ppuY);
-		shaperenderer.end();
 
+		shaperenderer.begin(ShapeType.Line);
+		int buttonLoc = getPixelPerWorldUnit(WORLD_LOWER_BOUND);
+		shaperenderer.line(0, buttonLoc*ppuY, width, buttonLoc*ppuY);
+		shaperenderer.end();
+		
 		Gdx.app.log("GameScreen", "ended render()");
 	}
 	@Override
@@ -301,6 +308,9 @@ public class ZTGameScreen extends ZTScreen {
 		ZTBody snake = world.getSnake();
 		ZTPart head = snake.parts.get(0);
 		ZTHuman stain = world.getStain();
+		List<ZTPriest> priestList  = world.getPriestList();
+		List<ZTPolice> policeList  = world.getPoliceList();
+		List<ZTBullet> bulletList  = world.getBulletList();
 		
 		int x,y;
 		int ppwu = getPixelPerWorldUnit(1);
@@ -309,6 +319,30 @@ public class ZTGameScreen extends ZTScreen {
 		x = stain.x * ppwu;
 		y = stain.y * ppwu;
 		spriteBatch.draw(stainPixmap, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);
+
+		if(!priestList.isEmpty()){
+			for (ZTPriest p: priestList){
+				x = p.x * ppwu;
+				y = p.y * ppwu;
+				spriteBatch.draw(priest, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);
+			}
+		}
+		
+		if(!policeList.isEmpty()){
+			for (ZTPolice p: policeList){
+				x = p.x * ppwu;
+				y = p.y * ppwu;
+				spriteBatch.draw(police, x*ppuX, y*ppuY, ppwu*ppuX, ppwu*ppuY);
+			}
+		}
+		
+		if(!bulletList.isEmpty()){
+			for (ZTBullet p: bulletList){
+				x = p.x * ppwu;
+				y = p.y * ppwu;
+				spriteBatch.draw(bullet, x*ppuX, y*ppuY, (ppwu/2)*ppuX, (ppwu/2)*ppuY);
+			}
+		}
 		
 		int len = snake.parts.size();
 		for (int i = 1; i < len; i++){
